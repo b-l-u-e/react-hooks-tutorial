@@ -74,7 +74,7 @@ export default class App extends Component {
 
 ```
 
-- when dealing with class-based component when updating state can be a Asynchronous 
+5: when dealing with class-based component when updating state can be a Asynchronous 
 
 ```
 import React, { Component } from 'react'
@@ -117,9 +117,9 @@ export default class App extends Component {
 
 ### UseEffect
 
-- Its hook to perform side effects on the application
+1: Its hook to perform side effects on the functional component
 
-- result of state changes
+2: It's a result of state changes
 
 ```
 import React, { useState, useEffect } from 'react'
@@ -159,3 +159,95 @@ function App(){
 
 ```
 
+- For class component
+
+```
+import React, { Component } from 'react'
+
+export default class App extends Component {
+    constructor(props) {
+        this.state = {
+            windowWidth: window.innerWidth
+        }
+    }
+
+    componentDidMount() {
+        <!-- Life cycle func = when component mounts/loads -->
+        console.log("The app component loaded)
+    }
+
+    componentDidUpdate(prevProps) {
+        <!-- Life cycnc sync = when component props change -->
+
+    }
+
+    componentWillUnmount(prevProps) {
+        <!-- Life cycnc sync = when component unmount/cleanup function -->
+
+    }
+
+
+  render() {
+    return (
+      <div>
+        <h1>Use effect hook </h1>
+        <h2>The window width is: {windowWidth} </h2>
+      </div>
+    )
+  }
+}
+
+```
+
+3: UseEffect hook variations
+
+```
+import React, {useEffect, useState} from 'react'
+
+function App() {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const [name, setName] = useState("")
+
+    <!--  every render -->
+    useEffect (() => {
+        console.log("I re-rendered")
+       
+    })
+
+    <!-- on first render / mount only! componentDidMount alternative -->
+    useEffect (() => {
+       console.log("component mounted')
+    }, [])
+
+    <!-- on first render + whenever dependency changes! componentDidUpdate alternative -->
+    useEffect (() => {
+        console.log(`The name changed: ${name}`)
+    }, [name])
+
+    <!-- follow same rules except this handles unmounting on component - component! - componentWillUnmount alternative -->
+
+    useEffect (() =>{
+         window.addEventListener("resize", updateWindowWidth)
+
+         return () => {
+            <!-- when component unmounts cleans up code -->
+            window.removeEventListener("resize", updateWindowWidth)
+
+         }
+    }, [])
+
+    const updateWindowWidth = () => {
+        setWindowWidth(window.innerWidth)
+    }
+
+
+
+  return (
+    <div>App</div>
+  )
+}
+
+export default App
+
+
+```
